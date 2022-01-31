@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -15,11 +16,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'PayUMoney WebCheckout',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'PayUMoney'),
+      home: const MyHomePage(title: 'PayU Web Checkout'),
     );
   }
 }
@@ -35,6 +37,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late PayUWebCheckout _payUWebCheckout;
+  Map<String, dynamic>? response;
 
   @override
   void initState() {
@@ -44,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _payUWebCheckout.on(
         PayUWebCheckout.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _payUWebCheckout.on(
-        PayUWebCheckout.EVENT_PAYMENT_SUCCESS, _handlePaymentError);
+        PayUWebCheckout.EVENT_PAYMENT_ERROR, _handlePaymentError);
   }
 
   @override
@@ -53,13 +56,13 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-  void _payment() {
+  void _pay() {
     _payUWebCheckout.doPayment(
         context: context,
         payuWebCheckoutModel: PayuWebCheckoutModel(
             key: "JPM7Fg",
             salt: "TuxqAugd",
-            txnId: DateTime.now().millisecondsSinceEpoch.toString(),
+            txnId: Random().nextInt(10000).toString(),
             phone: '9979999799',
             amount: "10.00",
             productName: "iPhone",
@@ -78,30 +81,94 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
           title: Text(widget.title),
         ),
-        body: Container());
+        body: SingleChildScrollView(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 100,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 2,
+                        ),
+                        onPressed: () {
+                          _pay();
+                        },
+                        child: const Text('Pay'),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      width: 100,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 2,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            response = null;
+                          });
+                        },
+                        child: const Text('Clear'),
+                      ),
+                    ),
+                  ],
+                ),
+                response == null
+                    ? Container()
+                    : Container(
+                        color: Colors.white,
+                        padding: const EdgeInsets.all(10.0),
+                        child: Table(
+                          columnWidths: const {0: FractionColumnWidth(.3)},
+                          border: TableBorder.all(color: Colors.black),
+                          children: response!.entries.map((e) {
+                            return TableRow(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(e.key),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(e.value),
+                                )
+                              ],
+                            );
+                          }).toList(),
+                        ),
+                      )
+              ],
+            ),
+          ),
+        ));
   }
 
   void _handlePaymentSuccess(Map<String, dynamic> response) {
-    if (kDebugMode) {
-      print(response["status"]);
-    }
+    setState(() {
+      this.response = response;
+    });
   }
 
   void _handlePaymentError(Map<String, dynamic> response) {
-    if (kDebugMode) {
-      print(response["status"]);
-    }
+    setState(() {
+      this.response = response;
+    });
   }
 }
