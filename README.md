@@ -4,12 +4,12 @@ Flutter plugin for PayU Web Checkout SDK.
 
 [![pub package](https://img.shields.io/pub/v/payu_web_checkout)](https://pub.dev/packages/payu_web_checkout)
 
-![alt text](https://github.com/mayurpitroda96/payu_web_checkout/blob/master/screenshot/1.png?raw=true)
-![alt text](https://github.com/mayurpitroda96/payu_web_checkout/blob/master/screenshot/2.png?raw=true)
-![alt text](https://github.com/mayurpitroda96/payu_web_checkout/blob/master/screenshot/3.png?raw=true)
-![alt text](https://github.com/mayurpitroda96/payu_web_checkout/blob/master/screenshot/4.png?raw=true)
-![alt text](https://github.com/mayurpitroda96/payu_web_checkout/blob/master/screenshot/5.png?raw=true)
-![alt text](https://github.com/mayurpitroda96/payu_web_checkout/blob/master/screenshot/.png?raw=true)
+![alt text](https://github.com/mayurpitroda96/payu_web_checkout/blob/master/screenshot/01.png?raw=true)
+![alt text](https://github.com/mayurpitroda96/payu_web_checkout/blob/master/screenshot/02.png?raw=true)
+![alt text](https://github.com/mayurpitroda96/payu_web_checkout/blob/master/screenshot/03.png?raw=true)
+![alt text](https://github.com/mayurpitroda96/payu_web_checkout/blob/master/screenshot/04.png?raw=true)
+![alt text](https://github.com/mayurpitroda96/payu_web_checkout/blob/master/screenshot/05.png?raw=true)
+![alt text](https://github.com/mayurpitroda96/payu_web_checkout/blob/master/screenshot/06.png?raw=true)
 
 * [Getting Started](#getting-started)
 * [Prerequisites](#prerequisites)
