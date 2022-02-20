@@ -70,9 +70,8 @@ class _MyHomePageState extends State<MyHomePage> {
             udf3: "",
             udf4: "",
             udf5: "",
-            successUrl:
-                "https://payu-lib-php.code.caprover.cf/payu_success.php",
-            failedUrl: "https://payu-lib-php.code.caprover.cf/payu_failed.php",
+            successUrl: "https://mayurpitroda.ml/payu_success.php",
+            failedUrl: "https://mayurpitroda.ml/payu_failed.php",
             baseUrl: "https://test.payu.in"));
   }
 
