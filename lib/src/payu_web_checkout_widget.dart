@@ -119,7 +119,7 @@ class _PayuWebCheckoutWidgetState extends State<PayuWebCheckoutWidget> {
               initialUrl: "about:blank",
               onWebViewCreated: (WebViewController webViewController) {
                 _controller = webViewController;
-                _loadHtmlFromAssets();
+                _loadHtmlFromUrl();
               },
               javascriptMode: JavascriptMode.unrestricted,
               onPageFinished: (value) async {
@@ -174,7 +174,7 @@ class _PayuWebCheckoutWidgetState extends State<PayuWebCheckoutWidget> {
     );
   }
 
-  _loadHtmlFromAssets() async {
+  _loadHtmlFromUrl() async {
     _controller.loadUrl(Uri.dataFromString(webViewClientPost(),
             mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
         .toString());

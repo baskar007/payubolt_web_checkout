@@ -1,6 +1,6 @@
 name: payu_web_checkout
 description: Unofficial PayU Money Flutter Plugin supports Android & iOS.
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/mayurpitroda96/payu_web_checkout
 
 environment:
