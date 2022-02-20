@@ -28,7 +28,7 @@ This plugin is available on Pub: [https://pub.dev/packages/payu_web_checkout](ht
 Add this to `dependencies` in your app's `pubspec.yaml`
 
 ```yaml
-payu_web_checkout: ^1.0.0
+payu_web_checkout: ^1.0.2
 ```
 
 ## Usage
