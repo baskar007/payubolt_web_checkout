@@ -5,8 +5,9 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:eventify/eventify.dart';
 import 'package:flutter/material.dart';
-import 'payu_web_checkout_widget.dart';
+
 import 'payu_web_checkout_model.dart';
+import 'payu_web_checkout_widget.dart';
 
 class PayUWebCheckout {
   // Event names
@@ -40,31 +41,10 @@ class PayUWebCheckout {
   }
 
   //Create hash and return hash string
-  String createHash(PayuWebCheckoutModel payuWebCheckoutModel) {
-    String? payhash = payuWebCheckoutModel.key +
-        '|' +
-        payuWebCheckoutModel.txnId +
-        '|' +
-        payuWebCheckoutModel.amount +
-        '|' +
-        payuWebCheckoutModel.productName +
-        '|' +
-        payuWebCheckoutModel.firstName +
-        '|' +
-        payuWebCheckoutModel.email +
-        '|' +
-        payuWebCheckoutModel.udf1 +
-        '|' +
-        payuWebCheckoutModel.udf2 +
-        '|' +
-        payuWebCheckoutModel.udf3 +
-        '|' +
-        payuWebCheckoutModel.udf4 +
-        '|' +
-        payuWebCheckoutModel.udf5 +
-        '||||||' +
-        payuWebCheckoutModel.salt;
-
+  String createHash(PayuWebCheckoutModel model) {
+    String? payhash =
+        "${model.key}|${model.txnId}|${model.amount}|${model.productName}|${model.firstName}|${model.email}|||||${model.udf5}||||||${model.salt}";
+    print(payhash);
     //Create hash
     var bytes = utf8.encode(payhash); // data being hashed
     var digest = sha512.convert(bytes);

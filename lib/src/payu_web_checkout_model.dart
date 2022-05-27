@@ -18,24 +18,27 @@ class PayuWebCheckoutModel {
   late String successUrl;
   late String failedUrl;
   late String phone;
+  late String env; //test or live
 
-  PayuWebCheckoutModel(
-      {required String key,
-      required String salt,
-      required String txnId,
-      required String amount,
-      required String productName,
-      required String phone,
-      required String firstName,
-      required String email,
-      required String udf1,
-      required String udf2,
-      required String udf3,
-      required String udf4,
-      required String udf5,
-      required String successUrl,
-      required String failedUrl,
-      required String baseUrl}) {
+  PayuWebCheckoutModel({
+    required String key,
+    required String salt,
+    required String txnId,
+    required String amount,
+    required String productName,
+    required String phone,
+    required String firstName,
+    required String email,
+    required String udf1,
+    required String udf2,
+    required String udf3,
+    required String udf4,
+    required String udf5,
+    required String successUrl,
+    required String failedUrl,
+    required String baseUrl,
+    required String env, //test or live
+  }) {
     this.key = key;
     this.salt = salt;
     this.txnId = txnId;
@@ -52,6 +55,7 @@ class PayuWebCheckoutModel {
     this.successUrl = successUrl;
     this.failedUrl = failedUrl;
     this.baseUrl = baseUrl;
+    this.env = env;
   }
 
   Map<String, dynamic> webParameter() {

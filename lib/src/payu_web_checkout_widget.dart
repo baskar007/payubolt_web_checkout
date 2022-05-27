@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:payu_web_checkout/payu_web_checkout.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -26,6 +27,92 @@ class _PayuWebCheckoutWidgetState extends State<PayuWebCheckoutWidget> {
   final _key = UniqueKey();
 
   String webViewClientPost() {
+    var buf = StringBuffer();
+    buf.write("<html><head></head>");
+    buf.write("<body>");
+    buf.write(
+        '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>');
+    if (widget.payuWebCheckoutModel.env == 'live') {
+      buf.write("<script id='bolt' "
+          "src='https://checkout-static.citruspay.com/bolt/run/bolt.min.js' "
+          "bolt-color='e34524'  "
+          "bolt-logo='http://boltiswatching.com/wp-content/uploads/2015/09/Bolt-Logo-e14421724859591.png'>"
+          "</script>");
+    } else {
+      buf.write("<script id='bolt' "
+          "src='https://sboxcheckout-static.citruspay.com/bolt/run/bolt.min.js' "
+          "bolt-color='e34524' "
+          "bolt-logo='http://boltiswatching.com/wp-content/uploads/2015/09/Bolt-Logo-e14421724859591.png'>"
+          "</script>");
+    }
+
+    buf.write('''<script>
+					var meta = document.createElement('meta');
+					meta.name = 'viewport';
+					meta.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
+					document.getElementsByTagName('head')[0].appendChild(meta);
+				
+						function launchBOLT()
+						{
+							if(typeof bolt == 'undefined'){
+								alert('BOLT not loaded yet...');
+								return false;
+							}
+
+						bolt.launch({
+						key: '${widget.payuWebCheckoutModel.key}',
+						txnid: '${widget.payuWebCheckoutModel.txnId}', 
+						hash: '${widget.payuWebCheckoutModel.payUhash}',
+						amount: '${widget.payuWebCheckoutModel.amount}',
+						firstname: '${widget.payuWebCheckoutModel.firstName}',
+						email: '${widget.payuWebCheckoutModel.email}',
+						phone: '${widget.payuWebCheckoutModel.phone}',
+						productinfo: '${widget.payuWebCheckoutModel.productName}',
+						udf5: '${widget.payuWebCheckoutModel.udf5}',
+						surl : '${widget.payuWebCheckoutModel.successUrl}',
+						furl: '${widget.payuWebCheckoutModel.failedUrl}'
+						},{ responseHandler: function(BOLT){
+								console.log( BOLT.response.txnStatus );		
+								if(BOLT.response.txnStatus != 'CANCEL')
+								{
+								var fr = '<form action=\"${widget.payuWebCheckoutModel.successUrl}\" method=\"post\">' +
+                    '<input type=\"hidden\" name=\"key\" value=\"'+BOLT.response.key+'\" />' +
+                    '<input type=\"hidden\" name=\"txnid\" value=\"'+BOLT.response.txnid+'\" />' +
+                    '<input type=\"hidden\" name=\"amount\" value=\"'+BOLT.response.amount+'\" />' +
+                    '<input type=\"hidden\" name=\"productinfo\" value=\"'+BOLT.response.productinfo+'\" />' +
+                    '<input type=\"hidden\" name=\"firstname\" value=\"'+BOLT.response.firstname+'\" />' +
+                    '<input type=\"hidden\" name=\"email\" value=\"'+BOLT.response.email+'\" />' +
+                    '<input type=\"hidden\" name=\"udf5\" value=\"'+BOLT.response.udf5+'\" />' +
+                    '<input type=\"hidden\" name=\"mihpayid\" value=\"'+BOLT.response.mihpayid+'\" />' +
+                    '<input type=\"hidden\" name=\"status\" value=\"'+BOLT.response.status+'\" />' +
+                    '<input type=\"hidden\" name=\"hash\" value=\"'+BOLT.response.hash+'\" />' +
+  								'</form>';
+								var form = jQuery(fr);
+								jQuery('body').append(form);								
+								form.submit();
+								}
+							},
+							catchException: function(BOLT){
+								alert( BOLT.message );
+							}
+						});
+						}
+						setTimeout(launchBOLT, 2500);
+
+					</script>''');
+
+    // buf.write(
+    //     "<form id='form1' action='${widget.payuWebCheckoutModel.baseUrl}/_payment' method='POST'>");
+
+    // widget.payuWebCheckoutModel.webParameter().forEach((key, value) {
+    //   buf.write("<input name='$key' type='hidden' value='$value' />");
+    // });
+    // buf.write("</form></body></html>");
+    buf.write("</body></html>");
+    return buf.toString();
+  }
+
+  String webViewClientPostOLD() {
     var buffer = StringBuffer();
     buffer.write("<html><head></head>");
     buffer.write("<body onload='form1.submit()'>");
@@ -175,7 +262,8 @@ class _PayuWebCheckoutWidgetState extends State<PayuWebCheckoutWidget> {
   }
 
   _loadHtmlFromUrl() async {
-    _controller.loadUrl(Uri.dataFromString(webViewClientPost(),
+    String html = webViewClientPost();
+    _controller.loadUrl(Uri.dataFromString(html,
             mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
         .toString());
   }
